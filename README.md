@@ -73,7 +73,6 @@ Telco_Churn_ML_Pipeline/
 ## 4. Ejecución y registro de la Etapa 3
 
 La siguiente guía describe los comandos necesarios para reproducir el pipeline y registrar los resultados correspondientes a la **Etapa 3**.  
-No se trata de una nueva etapa del proyecto, sino de las instrucciones para ejecutar el flujo de entrenamiento y sincronización.
 
 ### 4.1 Configuración de credenciales (solo una vez por sesión)
 ```bash
@@ -101,10 +100,10 @@ Estos comandos actualizan los artefactos y los repositorios remotos, garantizand
 
 ## 5. Autoría
 
-✍️ **Autor:** Elías Fernández  
-📧 **Contacto:** fernandezelias86@gmail.com  
-🏛️ **Institución:** Instituto Superior del Tiempo y Espacio Aplicado (ISTEA)  
-📆 **Etapa entregada:** Etapa 3 – Entrenamiento del modelo  
-🔗 **Repositorios:**  
+**Autor:** Elías Fernández  
+**Contacto:** fernandezelias86@gmail.com  
+**Institución:** Instituto Superior Tecnológico Empresarial Argentino (ISTEA)  
+**Etapa entregada:** Etapa 3 – Entrenamiento del modelo  
+**Repositorios:**  
 - [GitHub](https://github.com/fernandezelias/Telco_Churn_ML_Pipeline)  
 - [DagsHub](https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline)
