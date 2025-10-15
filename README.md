@@ -2,9 +2,11 @@
 
 ## 1. Descripción general
 
-El presente proyecto forma parte de la materia **Laboratorio de Minería de Datos II (ISTEA)** y tiene por objetivo desarrollar un pipeline reproducible de Machine Learning orientado a predecir la **renuncia de clientes (Churn)** en un servicio de telecomunicaciones.
+El presente proyecto se desarrolla en el marco de la materia **Laboratorio de Minería de Datos II (ISTEA)**.  
+Su objetivo es construir un **pipeline reproducible de Machine Learning** para predecir la **renuncia de clientes (Churn)** en una empresa de telecomunicaciones.
 
-El trabajo se organiza en etapas progresivas que integran herramientas de versionado de datos (**DVC**), seguimiento de experimentos (**MLflow**) y control de versiones (**Git/DagsHub**).
+El trabajo integra las herramientas **DVC** (versionado de datos), **MLflow** (seguimiento de experimentos) y **Git** (control de versiones), con repositorios sincronizados en **GitHub** y **DagsHub**.  
+De esta manera, se garantiza la trazabilidad completa del proceso, desde la ingesta de datos hasta el entrenamiento del modelo base.
 
 ---
 
@@ -32,41 +34,46 @@ Telco_Churn_ML_Pipeline/
 
 ---
 
-## 3. Etapas del proyecto
+## 3. Desarrollo del proyecto
 
-### **Etapa 1 — Setup inicial**
-- Creación del entorno local con **conda** y archivo `requirements.txt`.
-- Configuración del repositorio Git y conexión con **DagsHub**.
-- Estructuración de carpetas y carga del dataset crudo (`data/raw/telco_churn.csv`).
-- Versionado inicial del dataset con **DVC**.
+### **Etapa 1 – Configuración inicial**
+- Creación del entorno de trabajo con **conda** y archivo `requirements.txt`.
+- Inicialización del repositorio local y configuración con **GitHub**.
+- Sincronización con **DagsHub** para el seguimiento de experimentos.  
+- Definición de la estructura de carpetas y carga del dataset crudo (`data/raw/telco_churn.csv`).
+- Versionado inicial del dataset mediante **DVC**.
 
-**Entregable:** repositorio con estructura base y dataset versionado.
+**Resultado:** repositorio estructurado y dataset crudo versionado en ambos remotos.
 
 
-### **Etapa 2 — Limpieza y features**
+### **Etapa 2 – Limpieza y generación de variables**
 - Implementación de los procesos de preparación de datos.
 
-> **Nota:** en lugar de un único archivo `data_prep.py`, se desdobló la etapa de preparación de datos en dos scripts para seguir una estructura más modular:
-> - `make_data.py`: lectura e ingesta del dataset crudo.
-> - `preprocess_data.py`: limpieza y generación de variables derivadas.
+> **Nota técnica:** en lugar de un único archivo `data_prep.py`, se optó por una estructura modular que mejora la legibilidad del código y la trazabilidad del pipeline:
+> - `make_data.py`: lectura e ingesta del dataset crudo.  
+> - `preprocess_data.py`: limpieza, transformación y creación de variables derivadas.
 
-- Generación del dataset limpio (`data/processed`) y del dataset preparado (`data/prepared`).
-- Actualización del archivo `dvc.yaml` con los nuevos *stages* correspondientes.
+- Creación del dataset limpio (`data/processed`) y preparado (`data/prepared`).
+- Actualización del archivo `dvc.yaml` con los *stages* correspondientes a esta etapa.
 
-**Entregable:** pipeline reproducible con datasets crudo, limpio y preparado versionados.
+**Resultado:** pipeline reproducible con datasets crudo, limpio y preparado versionados con DVC.
 
 
-### **Etapa 3 — Entrenamiento de modelo**
-- Implementación del script `train.py` con un modelo base de **Regresión Logística**.
+### **Etapa 3 – Entrenamiento del modelo**
+- Implementación del script `train.py` con un modelo base de **Regresión Logística**.  
 - Lectura de hiperparámetros desde `params/logreg.yaml`.
-- Registro automático de métricas y artefactos con **MLflow**.
-- Integración de **DVC** para versionar el modelo y el archivo de métricas (`metrics.json`).
+- Registro automático de métricas, parámetros y artefactos mediante **MLflow**.  
+- Versionado del modelo entrenado y del archivo de métricas (`metrics.json`) con **DVC**.
+- Sincronización completa del repositorio local con **GitHub** y **DagsHub**.
 
-**Entregable:** modelo entrenado, métricas registradas y pipeline completo hasta la etapa de entrenamiento.
+**Resultado:** modelo entrenado, métricas registradas y pipeline completo hasta la etapa de entrenamiento, con seguimiento de experimentos y versionado de artefactos.
 
 ---
 
-## 4. Ejecución del pipeline
+## 4. Ejecución y registro de la Etapa 3
+
+La siguiente guía describe los comandos necesarios para reproducir el pipeline y registrar los resultados correspondientes a la **Etapa 3**.  
+No se trata de una nueva etapa del proyecto, sino de las instrucciones para ejecutar el flujo de entrenamiento y sincronización.
 
 ### 4.1 Configuración de credenciales (solo una vez por sesión)
 ```bash
@@ -75,12 +82,12 @@ set MLFLOW_TRACKING_USERNAME=fernandezelias
 set MLFLOW_TRACKING_PASSWORD=<TOKEN_PERSONAL>
 ```
 
-### 4.2 Ejecución completa del pipeline
+### 4.2 Ejecución del pipeline completo
 ```bash
 dvc repro
 ```
 
-### 4.3 Versionado y registro de cambios
+### 4.3 Versionado y registro de resultados
 ```bash
 dvc push
 git add .
@@ -88,13 +95,16 @@ git commit -m "Entrega Etapa 3 - Entrenamiento Telco Churn"
 git push
 ```
 
+Estos comandos actualizan los artefactos y los repositorios remotos, garantizando la trazabilidad del experimento tanto en GitHub como en DagsHub.
+
 ---
 
-## 6. Autor
+## 5. Autoría
 
-**Autor:** Elías Fernández  
-**Contacto:** elias.fernandez@istea.com.ar
- **Carrera:** Tecnicatura en Ciencia de Datos e Inteligencia Artificial (ISTEA)
- **Materia**: Laboratorio de Minería de Datos II 
- **Docente**: Diego Mosquera
- **Etapa entregada:** Etapa 3 – Entrenamiento del modelo
+✍️ **Autor:** Elías Fernández  
+📧 **Contacto:** fernandezelias86@gmail.com  
+🏛️ **Institución:** Instituto Superior del Tiempo y Espacio Aplicado (ISTEA)  
+📆 **Etapa entregada:** Etapa 3 – Entrenamiento del modelo  
+🔗 **Repositorios:**  
+- [GitHub](https://github.com/fernandezelias/Telco_Churn_ML_Pipeline)  
+- [DagsHub](https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline)
