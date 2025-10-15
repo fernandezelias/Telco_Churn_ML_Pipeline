@@ -100,10 +100,11 @@ Estos comandos actualizan los artefactos y los repositorios remotos, garantizand
 
 ## 5. Autoría
 
-**Autor:** Elías Fernández  
-**Contacto:** fernandezelias86@gmail.com  
-**Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial (ISTEA)  
-**Etapa entregada:** Etapa 3 – Entrenamiento del modelo  
-**Repositorios:**  
-- [GitHub](https://github.com/fernandezelias/Telco_Churn_ML_Pipeline)  
-- [DagsHub](https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline)
+- **Autor:** Elías Fernández
+- **Contacto:** fernandezelias86@gmail.com
+- **Institución:** Instituto Superior Tecnológico Empresarial Argentino (ISTEA)
+- **Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial
+- **Etapa entregada:** Etapa 3 – Entrenamiento del modelo
+- **Repositorios:** 
+    [GitHub](https://github.com/fernandezelias/Telco_Churn_ML_Pipeline) 
+    [DagsHub](https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline)
