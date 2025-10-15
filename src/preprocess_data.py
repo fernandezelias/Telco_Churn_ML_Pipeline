@@ -7,7 +7,7 @@ def main(input_path, out):
     Etapa de preprocesamiento del pipeline Telco Churn (DVC Stage: preprocess).
 
     - Lee el dataset limpio generado en la etapa anterior (data/processed/telco_churn.csv).
-    - Elimina columnas irrelevantes (por ejemplo, 'customer_id').
+    - Elimina columnas irrelevantes (en particular, 'customer_id').
     - Convierte variables categóricas en numéricas mediante one-hot encoding.
     - Verifica que todas las columnas resultantes sean numéricas.
     - Guarda el dataset preprocesado en la ruta indicada por '--out'.
