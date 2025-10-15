@@ -4,7 +4,7 @@
 
 El presente proyecto forma parte de la materia **Laboratorio de Minería de Datos II (ISTEA)** y tiene por objetivo desarrollar un pipeline reproducible de Machine Learning orientado a predecir la **renuncia de clientes (Churn)** en un servicio de telecomunicaciones.
 
-El trabajo se organiza en etapas progresivas que integran herramientas de versionado de datos (**DVC**), seguimiento de experimentos (**MLflow**) y control de versiones (**Git**), con repositorios sincronizados tanto en **GitHub** como en **DagsHub**.
+El trabajo se organiza en etapas progresivas que integran herramientas de versionado de datos (**DVC**), seguimiento de experimentos (**MLflow**) y control de versiones (**Git/DagsHub**).
 
 ---
 
@@ -36,12 +36,11 @@ Telco_Churn_ML_Pipeline/
 
 ### **Etapa 1 — Setup inicial**
 - Creación del entorno local con **conda** y archivo `requirements.txt`.
-- Configuración del repositorio Git local.
-- Conexión con **GitHub** y sincronización con **DagsHub**.
+- Configuración del repositorio Git y conexión con **DagsHub**.
 - Estructuración de carpetas y carga del dataset crudo (`data/raw/telco_churn.csv`).
 - Versionado inicial del dataset con **DVC**.
 
-**Entregable:** repositorio con estructura base, dataset versionado y conexión establecida con GitHub/DagsHub.
+**Entregable:** repositorio con estructura base y dataset versionado.
 
 
 ### **Etapa 2 — Limpieza y features**
@@ -62,9 +61,8 @@ Telco_Churn_ML_Pipeline/
 - Lectura de hiperparámetros desde `params/logreg.yaml`.
 - Registro automático de métricas y artefactos con **MLflow**.
 - Integración de **DVC** para versionar el modelo y el archivo de métricas (`metrics.json`).
-- Sincronización completa del repositorio local con **GitHub** y **DagsHub** (remotos duales).
 
-**Entregable:** modelo entrenado, métricas registradas y pipeline completo hasta la etapa de entrenamiento, con seguimiento y versionado en ambas plataformas.
+**Entregable:** modelo entrenado, métricas registradas y pipeline completo hasta la etapa de entrenamiento.
 
 ---
 
@@ -83,37 +81,20 @@ dvc repro
 ```
 
 ### 4.3 Versionado y registro de cambios
-
-#### Subir a GitHub
 ```bash
+dvc push
 git add .
 git commit -m "Entrega Etapa 3 - Entrenamiento Telco Churn"
-git push origin main
+git push
 ```
-
-#### Subir a DagsHub
-```bash
-git push dagshub main
-dvc push
-```
-
----
-
-## 5. Próximos pasos (Etapa 4)
-
-- Evaluar distintos modelos supervisados (árboles, bosques aleatorios, etc.).  
-- Optimizar hiperparámetros mediante *Grid Search* o *Random Search*.  
-- Implementar visualizaciones comparativas de métricas.  
-- Documentar los resultados finales en el repositorio de DagsHub y actualizar el README profesional (bilingüe).
 
 ---
 
 ## 6. Autor
 
-✍️ **Autor:** Elías Fernández  
-📧 **Contacto:** fernandezelias86@gmail.com  
-🏛️ **Institución:** Instituto Superior del Tiempo y Espacio Aplicado (ISTEA)  
-📆 **Etapa entregada:** Etapa 3 – Entrenamiento del modelo  
-🔗 **Repositorios:**  
-- [GitHub](https://github.com/fernandezelias/Telco_Churn_ML_Pipeline)  
-- [DagsHub](https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline)
+**Autor:** Elías Fernández  
+**Contacto:** elias.fernandez@istea.com.ar
+ **Carrera:** Tecnicatura en Ciencia de Datos e Inteligencia Artificial (ISTEA)
+ **Materia**: Laboratorio de Minería de Datos II 
+ **Docente**: Diego Mosquera
+ **Etapa entregada:** Etapa 3 – Entrenamiento del modelo
