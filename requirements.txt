@@ -1,0 +1,15 @@
+# ==========================================================
+# Telco Churn ML Pipeline - Project Dependencies
+# ==========================================================
+
+# --- Core dependencies ---
+pandas==2.2.2           # Data manipulation and analysis
+scikit-learn==1.3.2     # Machine Learning models and utilities
+joblib==1.3.2           # Model serialization
+pyyaml==6.0.1           # YAML configuration management
+
+# --- Versioning & experiment tracking ---
+dvc==3.49.0             # Data Version Control
+dvc-s3==3.1.0           # DVC remote storage via AWS S3 (used by DagsHub)
+dagshub==0.3.8.post2    # DagsHub integration for data & model tracking
+mlflow==2.8.0           # MLflow for experiment logging and model registry

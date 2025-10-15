@@ -1,0 +1,31 @@
+# ==========================================================
+# Telco Churn ML Pipeline - .gitignore
+# ==========================================================
+
+# --- Environment and credentials ---
+.env/                  # Environment variables (API keys, secrets)
+.venv/                 # Virtual environment folder
+venv/                  
+ENV/                   
+
+# --- Python cache ---
+__pycache__/           
+*.py[cod]              
+
+# --- Jupyter notebooks ---
+.ipynb_checkpoints/     # Auto-saved notebook checkpoints
+
+# --- DVC & MLflow ---
+.dvc/tmp/               # Temporary files used by DVC
+/metrics.json           # Model metrics output file (auto-generated)
+.mlflow/                # Local MLflow runs (optional to ignore)
+
+# --- System and IDE files ---
+.DS_Store               # macOS system file
+.idea/                  # JetBrains IDE config
+.vscode/                # VS Code workspace settings
+
+# --- Logs and temporary outputs ---
+logs/
+*.log
+/metrics.json

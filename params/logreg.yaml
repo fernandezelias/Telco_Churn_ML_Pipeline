@@ -1,0 +1,32 @@
+# ==============================================================
+# Telco Churn - params.yaml
+# Configuración de modelo, división y rutas
+# ==============================================================
+
+model:
+  type: LogisticRegression     # Modelo base (clasificación binaria)
+  penalty: l2                  # Regularización L2
+  C: 2.0                       # Inverso de la fuerza de regularización
+  solver: lbfgs                # Algoritmo de optimización recomendado
+  max_iter: 300                # Iteraciones máximas
+  fit_intercept: true          # Incluye término independiente
+  random_state: 42             # Reproducibilidad de resultados
+  n_jobs: -1                   # Usa todos los núcleos disponibles
+
+split:
+  test_size: 0.2               # 20% de los datos para test
+  random_state: 42             # Misma semilla que el modelo
+  stratify: true               # Mantiene proporción de clases 0/1
+
+metrics:
+  - accuracy
+  - precision
+  - recall
+  - f1
+  - roc_auc
+
+path:
+  raw_data: data/raw/telco_churn.csv     # Dataset de entrada
+  model_path: models/telco_logreg.pkl    # Archivo del modelo entrenado
+  metrics_path: metrics.json             # Métricas de evaluación
+  preds_path: data/outputs/preds.csv     # (Opcional) Archivo de predicciones

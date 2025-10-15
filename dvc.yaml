@@ -1,0 +1,27 @@
+stages:
+  make_data:
+    cmd: python src/make_data.py --out data/processed/telco_churn.csv
+    deps:
+      - src/make_data.py
+      - data/raw/telco_churn.csv
+    outs:
+      - data/processed/telco_churn.csv
+  
+  preprocess:
+    cmd: python src/preprocess_data.py --input data/processed/telco_churn.csv --out data/prepared/telco_churn_prepared.csv
+    deps:
+      - src/preprocess_data.py
+      - data/processed/telco_churn.csv
+    outs:
+      - data/prepared/telco_churn_prepared.csv
+
+  train:
+    cmd: python src/train.py --data data/prepared/telco_churn_prepared.csv --model models/telco_logreg.pkl --params params/logreg.yaml --metrics metrics.json
+    deps:
+      - src/train.py
+      - data/prepared/telco_churn_prepared.csv
+      - params/logreg.yaml
+    outs:
+      - models/telco_logreg.pkl
+    metrics:
+      - metrics.json

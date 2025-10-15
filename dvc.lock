@@ -1,0 +1,61 @@
+schema: '2.0'
+stages:
+  make_data:
+    cmd: python src/make_data.py --out data/processed/telco_churn.csv
+    deps:
+    - path: data/raw/telco_churn.csv
+      hash: md5
+      md5: 006527876bfe18c977d74eb4bc59443f
+      size: 873370
+    - path: src/make_data.py
+      hash: md5
+      md5: 74eed17ad71e7516e65caab3341551ff
+      size: 1653
+    outs:
+    - path: data/processed/telco_churn.csv
+      hash: md5
+      md5: ac40be7770ac4b2e22a43d2ec75a2bad
+      size: 883371
+  preprocess:
+    cmd: python src/preprocess_data.py --input data/processed/telco_churn.csv 
+      --out data/prepared/telco_churn_prepared.csv
+    deps:
+    - path: data/processed/telco_churn.csv
+      hash: md5
+      md5: ac40be7770ac4b2e22a43d2ec75a2bad
+      size: 883371
+    - path: src/preprocess_data.py
+      hash: md5
+      md5: 67e16c574926e6de874c79808ac641f9
+      size: 2574
+    outs:
+    - path: data/prepared/telco_churn_prepared.csv
+      hash: md5
+      md5: 004465a82c600845f99d035943fe597f
+      size: 1022255
+  train:
+    cmd: python src/train.py --data data/prepared/telco_churn_prepared.csv 
+      --model models/telco_logreg.pkl --params params/logreg.yaml --metrics 
+      metrics.json
+    deps:
+    - path: data/prepared/telco_churn_prepared.csv
+      hash: md5
+      md5: 004465a82c600845f99d035943fe597f
+      size: 1022255
+    - path: params/logreg.yaml
+      hash: md5
+      md5: 2621a187199853d333005c87637c4933
+      size: 1310
+    - path: src/train.py
+      hash: md5
+      md5: 723cc77db4dc080394b6a6663fd6fdca
+      size: 6776
+    outs:
+    - path: metrics.json
+      hash: md5
+      md5: 57643459cf705d9f1e15479ac47742de
+      size: 156
+    - path: models/telco_logreg.pkl
+      hash: md5
+      md5: f1f15151fd9bfd5579206f7c660da190
+      size: 1759
