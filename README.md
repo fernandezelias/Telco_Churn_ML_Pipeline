@@ -106,10 +106,11 @@ Estos comandos actualizan los artefactos y los repositorios remotos, garantizand
 - **Fiorela Macheroni** — fiorela.macheroni@istea.com.ar
 - **Sebastián Fuentes** — sebastian.fuentes@istea.com.ar
 
-**Institución:** Instituto Superior Tecnológico Empresarial Argentino (ISTEA)  
-**Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial  
-**Materia:** Laboratorio de Minería de Datos II  
-**Etapa entregada:** Etapa 3 – Entrenamiento del modelo  
+**Información académica:**
+- **Institución:** Instituto Superior Tecnológico Empresarial Argentino (ISTEA)
+- **Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial
+- **Materia:** Laboratorio de Minería de Datos II
+- **Etapa entregada:** Etapa 3 – Entrenamiento del modelo
 
 **Repositorios:**
 - [GitHub](https://github.com/fernandezelias/Telco_Churn_ML_Pipeline)
