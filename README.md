@@ -2,8 +2,7 @@
 
 ## 1. Descripción general
 
-El presente proyecto se desarrolla en el marco de la materia **Laboratorio de Minería de Datos II (ISTEA)**.  
-Su objetivo es construir un **pipeline reproducible de Machine Learning** para predecir la **renuncia de clientes (Churn)** en una empresa de telecomunicaciones.
+El presente proyecto se desarrolla en el marco de la materia **Laboratorio de Minería de Datos II (ISTEA)**. Su objetivo es construir un **pipeline reproducible de Machine Learning** para predecir la **renuncia de clientes (Churn)** en una empresa de telecomunicaciones.
 
 El trabajo integra las herramientas **DVC** (versionado de datos), **MLflow** (seguimiento de experimentos) y **Git** (control de versiones), con repositorios sincronizados en **GitHub** y **DagsHub**.  
 De esta manera, se garantiza la trazabilidad completa del proceso, desde la ingesta de datos hasta el entrenamiento del modelo base.
@@ -60,11 +59,13 @@ Telco_Churn_ML_Pipeline/
 
 
 ### **Etapa 3 – Entrenamiento del modelo**
-- Implementación del script `train.py` con un modelo base de **Regresión Logística**.  
+- Implementación del script `train.py` con un modelo base de **Regresión Logística**.
+- Se utiliza Regresión Logística como modelo base por ser apropiada para problemas de clasificación binaria y permitir una interpretación clara de la influencia de cada variable.
 - Lectura de hiperparámetros desde `params/logreg.yaml`.
-- Registro automático de métricas, parámetros y artefactos mediante **MLflow**.  
+- Registro automático de métricas, parámetros y artefactos mediante **MLflow**.
 - Versionado del modelo entrenado y del archivo de métricas (`metrics.json`) con **DVC**.
 - Sincronización completa del repositorio local con **GitHub** y **DagsHub**.
+
 
 **Resultado:** modelo entrenado, métricas registradas y pipeline completo hasta la etapa de entrenamiento, con seguimiento de experimentos y versionado de artefactos.
 
@@ -104,10 +105,11 @@ Estos comandos actualizan los artefactos y los repositorios remotos, garantizand
 - **Elías Fernández** — elias.fernandez@istea.com.ar
 - **Fiorela Macheroni** — fiorela.macheroni@istea.com.ar
 - **Sebastián Fuentes** — sebastian.fuentes@istea.com.ar
-
 **Institución:** Instituto Superior Tecnológico Empresarial Argentino (ISTEA)  
 **Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial  
 **Etapa entregada:** Etapa 3 – Entrenamiento del modelo
+
+---
 
 **Repositorios:**
 - [GitHub](https://github.com/fernandezelias/Telco_Churn_ML_Pipeline)
