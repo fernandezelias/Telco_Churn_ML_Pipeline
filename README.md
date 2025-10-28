@@ -109,7 +109,7 @@ Estos comandos actualizan los artefactos y los repositorios remotos, garantizand
 **Información académica:**
 - **Institución:** Instituto Superior Tecnológico Empresarial Argentino (ISTEA)
 - **Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial
-- **Materia:** Laboratorio de Minería de Datos II
+- **Materia:** Laboratorio de Minería de Datos
 - **Etapa entregada:** Etapa 3 – Entrenamiento del modelo
 
 **Repositorios:**
