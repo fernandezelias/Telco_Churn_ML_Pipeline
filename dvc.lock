@@ -26,8 +26,8 @@ stages:
       size: 883371
     - path: src/preprocess_data.py
       hash: md5
-      md5: 67e16c574926e6de874c79808ac641f9
-      size: 2574
+      md5: 9c4a8df2586273ba9984d06e6592329f
+      size: 2576
     outs:
     - path: data/prepared/telco_churn_prepared.csv
       hash: md5
