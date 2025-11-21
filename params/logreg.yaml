@@ -6,7 +6,7 @@
 model:
   type: LogisticRegression     # Modelo base (clasificación binaria)
   penalty: l2                  # Regularización L2
-  C: 2.0                       # Inverso de la fuerza de regularización
+  C: 1.0                       # Inverso de la fuerza de regularización
   solver: lbfgs                # Algoritmo de optimización recomendado
   max_iter: 100                # Iteraciones máximas
   fit_intercept: true          # Incluye término independiente
