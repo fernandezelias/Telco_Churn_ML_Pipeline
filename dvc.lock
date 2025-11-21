@@ -44,8 +44,8 @@ stages:
       size: 1022255
     - path: params/logreg.yaml
       hash: md5
-      md5: 914128357d455f86c3fd2209e4691143
-      size: 1310
+      md5: 1cc9f623b69ec6a15aefcddf1d98a154
+      size: 1311
     - path: src/train.py
       hash: md5
       md5: 723cc77db4dc080394b6a6663fd6fdca
@@ -53,9 +53,9 @@ stages:
     outs:
     - path: metrics.json
       hash: md5
-      md5: c87582aac290ca3329dab1616ea19bc5
-      size: 156
+      md5: 2e103c5c3f904a5fd7b8ca68e45c6ce1
+      size: 157
     - path: models/telco_logreg.pkl
       hash: md5
-      md5: 87f8685913bf1cddb5a075c7b382545a
+      md5: 742be0daa22dc57e25d7bc7a5db4d267
       size: 1759

@@ -4,10 +4,8 @@
 
 El presente proyecto se desarrolla en el marco de la materia **Laboratorio de Minería de Datos II (ISTEA)**. Su objetivo es construir un **pipeline reproducible de Machine Learning** para predecir la **renuncia de clientes (Churn)** en una empresa de telecomunicaciones.
 
-El trabajo integra las herramientas **DVC** (versionado de datos), **MLflow** (seguimiento de experimentos) y **Git** (control de versiones), con repositorios sincronizados en **GitHub** y **DagsHub**.  
-De esta manera, se garantiza la trazabilidad completa del proceso, desde la ingesta de datos hasta el entrenamiento del modelo base.
-
----
+El trabajo integra las herramientas **DVC** (versionado de datos), **MLflow** (seguimiento de experimentos) y **Git** (control de versiones), con repositorios sincronizados en **GitHub** y **DagsHub**.
+Esto permite garantizar la trazabilidad completa del proceso, desde la ingesta de datos hasta el entrenamiento y comparación de modelos.
 
 ## 2. Estructura general del proyecto
 
@@ -15,103 +13,103 @@ De esta manera, se garantiza la trazabilidad completa del proceso, desde la inge
 Telco_Churn_ML_Pipeline/
 │
 ├── data/
-│   ├── raw/                # Datos originales
-│   ├── processed/          # Datos limpios y transformados
-│   └── prepared/           # Datos listos para modelado
+│   ├── raw/
+│   ├── processed/
+│   └── prepared/
 │
-├── models/                 # Modelos entrenados
-├── params/                 # Parámetros e hiperparámetros
-├── src/                    # Scripts principales
+├── models/
+├── params/
+├── src/
 │   ├── make_data.py
 │   ├── preprocess_data.py
 │   └── train.py
 │
-├── dvc.yaml                # Definición del pipeline DVC
-├── requirements.txt        # Dependencias del entorno
+├── dvc.yaml
+├── requirements.txt
 └── README.md
 ```
 
----
-
 ## 3. Desarrollo del proyecto
 
-### **Etapa 1 – Configuración inicial**
-- Creación del entorno de trabajo con **conda** y archivo `requirements.txt`.
-- Inicialización del repositorio local y configuración con **GitHub**.
-- Sincronización con **DagsHub** para el seguimiento de experimentos.  
-- Definición de la estructura de carpetas y carga del dataset crudo (`data/raw/telco_churn.csv`).
-- Versionado inicial del dataset mediante **DVC**.
+### Etapa 1 – Configuración inicial
+- Creación del entorno con conda.
+- Inicialización del repositorio y configuración con GitHub.
+- Conexión con DagsHub como remoto adicional.
+- Versionado del dataset crudo con DVC.
 
-**Resultado:** repositorio estructurado y dataset crudo versionado en ambos remotos.
+### Etapa 2 – Limpieza y generación de variables
+- `make_data.py`: ingesta del dataset crudo.
+- `preprocess_data.py`: limpieza, encoding, escalado y variables derivadas.
+- Datasets limpios y preparados versionados con DVC.
 
-
-### **Etapa 2 – Limpieza y generación de variables**
-- Implementación de los procesos de preparación de datos.
-
-> **Nota técnica:** en lugar de un único archivo `data_prep.py`, se optó por una estructura modular que mejora la legibilidad del código y la trazabilidad del pipeline:
-> - `make_data.py`: lectura e ingesta del dataset crudo.  
-> - `preprocess_data.py`: limpieza, transformación y creación de variables derivadas.
-
-- Creación del dataset limpio (`data/processed`) y preparado (`data/prepared`).
-- Actualización del archivo `dvc.yaml` con los *stages* correspondientes a esta etapa.
-
-**Resultado:** pipeline reproducible con datasets crudo, limpio y preparado versionados con DVC.
-
-
-### **Etapa 3 – Entrenamiento del modelo**
-- Implementación del script `train.py` con un modelo base de **Regresión Logística**.
-- Se utiliza Regresión Logística como modelo base por ser apropiada para problemas de clasificación binaria y permitir una interpretación clara de la influencia de cada variable.
+### Etapa 3 – Entrenamiento del modelo
+- Modelo base: **Regresión Logística**.
 - Lectura de hiperparámetros desde `params/logreg.yaml`.
-- Registro automático de métricas, parámetros y artefactos mediante **MLflow**.
-- Versionado del modelo entrenado y del archivo de métricas (`metrics.json`) con **DVC**.
-- Sincronización completa del repositorio local con **GitHub** y **DagsHub**.
-
-
-**Resultado:** modelo entrenado, métricas registradas y pipeline completo hasta la etapa de entrenamiento, con seguimiento de experimentos y versionado de artefactos.
-
----
+- Registro de métricas y parámetros en MLflow.
+- Versionado del modelo con DVC.
 
 ## 4. Ejecución y registro de la Etapa 3
 
-La siguiente guía describe los comandos necesarios para reproducir el pipeline y registrar los resultados correspondientes a la **Etapa 3**.  
-
-### 4.1 Configuración de credenciales (solo una vez por sesión)
-```bash
+### 4.1 Configuración de credenciales
+```
 set MLFLOW_TRACKING_URI=https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline.mlflow
 set MLFLOW_TRACKING_USERNAME=fernandezelias
 set MLFLOW_TRACKING_PASSWORD=<TOKEN_PERSONAL>
 ```
 
-### 4.2 Ejecución del pipeline completo
-```bash
+### 4.2 Ejecución
+```
 dvc repro
 ```
 
-### 4.3 Versionado y registro de resultados
-```bash
+### 4.3 Versionado
+```
 dvc push
 git add .
 git commit -m "Entrega Etapa 3 - Entrenamiento Telco Churn"
 git push
 ```
 
-Estos comandos actualizan los artefactos y los repositorios remotos, garantizando la trazabilidad del experimento tanto en GitHub como en DagsHub.
+## 5. Etapa 4 — Experimentos y análisis comparativo
 
----
+Se evaluaron cinco corridas variando el hiperparámetro **C** de la Regresión Logística.
 
-## 5. Autoría
+### 5.1 Hiperparámetros
+
+| Run | C | Descripción |
+|-----|----|-------------|
+| 1 | 2.0 | Modelo base |
+| 2 | 2.0 | Re-ejecución |
+| 3 | 2.0 | Re-ejecución |
+| 4 | 5.0 | Menor regularización |
+| 5 | 10.0 | Regularización mínima |
+
+### 5.2 Métricas comparativas
+
+| Run | Accuracy | Precision | Recall | F1 | ROC AUC |
+|-----|----------|-----------|--------|------|----------|
+| 1 | 0.6800 | 0.5751 | 0.4580 | 0.5099 | 0.72194 |
+| 2 | 0.6800 | 0.5751 | 0.4580 | 0.5099 | 0.72194 |
+| 3 | 0.6800 | 0.5751 | 0.4580 | 0.5099 | 0.72195 |
+| 4 | 0.6760 | 0.5642 | 0.4773 | 0.5171 | 0.72011 |
+| 5 | 0.6845 | 0.5819 | 0.4691 | 0.5194 | 0.72581 |
+
+### 5.3 Conclusiones
+
+El modelo con **C = 10.0 (Run 5)** obtiene el mejor balance entre precisión, AUC y F1-score.
+
+## 6. Autoría
 
 **Autores:**
-- **Elías Fernández** — elias.fernandez@istea.com.ar
-- **Fiorela Macheroni** — fiorela.macheroni@istea.com.ar
-- **Sebastián Fuentes** — sebastian.fuentes@istea.com.ar
+- Elías Fernández — elias.fernandez@istea.com.ar
+- Fiorela Macheroni — fiorela.macheroni@istea.com.ar
+- Sebastián Fuentes — sebastian.fuentes@istea.com.ar
 
-**Información académica:**
-- **Institución:** Instituto Superior Tecnológico Empresarial Argentino (ISTEA)
-- **Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial
-- **Materia:** Laboratorio de Minería de Datos
-- **Etapa entregada:** Etapa 3 – Entrenamiento del modelo
+**Institución:** ISTEA  
+**Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial  
+**Materia:** Laboratorio de Minería de Datos  
+**Etapa entregada:** Etapa 4 – Experimentos y comparación de modelos
 
 **Repositorios:**
-- [GitHub](https://github.com/fernandezelias/Telco_Churn_ML_Pipeline)
-- [DagsHub](https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline)
+- GitHub: https://github.com/fernandezelias/Telco_Churn_ML_Pipeline
+- DagsHub: https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline
