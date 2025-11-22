@@ -1,0 +1,60 @@
+name: Telco Churn CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # 1) Se descarga el contenido del repositorio desde la rama correspondiente.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2) Se configura el entorno de Python 3.11 para garantizar una base limpia y reproducible.
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 3) Se instalan las dependencias del proyecto según requirements.txt,
+      #    asegurando que pandas, sklearn, DVC, dagshub y otras librerías estén disponibles.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4) Se configuran las variables de entorno necesarias para la autenticación con DagsHub,
+      #    utilizando los secrets protegidos almacenados en GitHub.
+      - name: Set environment for DagsHub
+        run: |
+          echo "DAGSHUB_USER=${{ secrets.DAGSHUB_USER }}" >> $GITHUB_ENV
+          echo "DAGSHUB_TOKEN=${{ secrets.DAGSHUB_TOKEN }}" >> $GITHUB_ENV
+
+      # 5) Se verifica que DVC esté instalado correctamente dentro del runner,
+      #    confirmando que la herramienta esté disponible antes de continuar.
+      - name: Check DVC installation
+        run: dvc --version
+
+      # 6) Se descargan los datos y archivos versionados en DVC desde el remoto en DagsHub,
+      #    permitiendo ejecutar el pipeline con acceso a todos los datasets y modelos necesarios.
+      - name: DVC Pull
+        run: dvc pull -v
+
+      # 7) Se ejecuta la reproducción completa del pipeline DVC,
+      #    reconstruyendo las etapas de preprocesamiento, entrenamiento y generación de artefactos.
+      #    Esto asegura que el pipeline funcione correctamente en un entorno limpio.
+      - name: Reproduce DVC pipeline
+        run: dvc repro -v
+
+      # 8) Se muestran las métricas resultantes generadas por DVC,
+      #    permitiendo verificar en los logs de GitHub Actions el rendimiento del modelo.
+      - name: Show DVC Metrics
+        run: dvc metrics show

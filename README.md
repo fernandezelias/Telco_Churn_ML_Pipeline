@@ -98,7 +98,7 @@ Se evaluaron cinco corridas variando el hiperparámetro **C** de la Regresión L
 
 El modelo con **C = 10.0 (Run 5)** obtiene el mejor balance entre precisión, AUC y F1-score.
 
-## 6. Autoría
+## 6. Integrantes del equipo
 
 **Autores:**
 - Elías Fernández — elias.fernandez@istea.com.ar
