@@ -2,5 +2,3 @@
     remote = origin
 ['remote "origin"']
     url = https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline.dvc
-    user = fernandezelias
-    password = 61bb77ba8899388f0a76de140ba4c2a7b15c8eb2
