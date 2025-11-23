@@ -114,13 +114,59 @@ Se evaluaron cinco corridas variando el hiperparámetro **C** de la Regresión L
 
 ---
 
-CI Pipeline validated ✔
+## 6. Etapa 5 — CI/CD con GitHub Actions
+
+La etapa 5 incorpora **Integración Continua (CI)** mediante **GitHub Actions**, permitiendo verificar automáticamente que el pipeline funciona correctamente ante cada *push* o *pull request*.
+
+### 6.1 Objetivo de la etapa
+Garantizar que:
+- El pipeline DVC (`dvc repro`) se ejecuta correctamente en un entorno limpio.
+- Los datos versionados pueden ser obtenidos (`dvc pull`) desde el remoto.
+- No existen rupturas en el código del proyecto.
+- Cada *Pull Request* activa el workflow automáticamente.
+
+### 6.2 Configuración utilizada
+El workflow principal se encuentra en:
+
+```
+.github/workflows/ci.yml
+```
+
+Incluye:
+- Checkout del repositorio.
+- Instalación de dependencias.
+- Ejecución de `dvc pull`.
+- Ejecución completa del pipeline: `dvc repro`.
+- Visualización de métricas generadas.
+
+Se eliminaron dependencias a MLflow y DagsHub dentro del archivo `train.py` para asegurar compatibilidad con el entorno de CI.
+
+### 6.3 Validación mediante Pull Request
+Para validar el funcionamiento:
+1. Se creó una rama de trabajo:  
+   `feat/ci-validation`
+2. Se modificó el archivo `README.md`.
+3. Se ejecutó un *Pull Request* hacia `main`.
+4. GitHub Actions ejecutó el workflow automáticamente.
+5. El workflow finalizó correctamente:
+
+```
+✔ All checks have passed
+✔ Telco Churn CI / build (pull_request)
+```
+
+**Resultado:** La etapa 5 queda correctamente implementada y validada.
 
 ---
 
-## 6. Integrantes del equipo
+## CI Status
 
-**Autores:**
+✔️ **CI Pipeline validated** — La integración continua con GitHub Actions reproduce el pipeline completo sin errores.
+
+---
+
+## Integrantes del equipo
+
 - Elías Fernández — elias.fernandez@istea.com.ar
 - Fiorela Macheroni — fiorela.macheroni@istea.com.ar
 - Sebastián Fuentes — sebastian.fuentes@istea.com.ar
@@ -128,7 +174,7 @@ CI Pipeline validated ✔
 **Institución:** ISTEA  
 **Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial  
 **Materia:** Laboratorio de Minería de Datos  
-**Etapa entregada:** Etapa 4 – Experimentos y comparación de modelos
+**Etapa entregada:** Etapa 4–5 – Experimentos, comparación de modelos y CI/CD
 
 **Repositorios:**
 - GitHub: https://github.com/fernandezelias/Telco_Churn_ML_Pipeline
