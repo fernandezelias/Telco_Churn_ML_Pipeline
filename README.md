@@ -114,6 +114,9 @@ Se evaluaron cinco corridas variando el hiperparámetro **C** de la Regresión L
 
 ---
 
+CI Pipeline validated ✔
+
+---
 
 ## 6. Integrantes del equipo
 
