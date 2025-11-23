@@ -1,21 +1,23 @@
-import argparse, json, joblib, yaml, os
+import argparse
+import json
+import joblib
+import yaml
+import os
 import pandas as pd
+
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+)
 
-import dagshub
-import mlflow
 
-# Activa MLflow en DagsHub
-dagshub.init(repo_owner='fernandezelias',
-             repo_name='Telco_Churn_ML_Pipeline',
-             mlflow=False) # Cambiar a True si se desea usar MLflow
-
-USE_MLFLOW = False
+# ============================================================
+# 1. Carga de parámetros
+# ============================================================
 
 def load_params(pfile):
     """Carga los parámetros desde un archivo YAML."""
@@ -23,14 +25,14 @@ def load_params(pfile):
         return yaml.safe_load(f)
 
 
+# ============================================================
+# 2. Construcción dinámica del modelo
+# ============================================================
+
 def build_model(model_cfg):
     """
-    Construye y devuelve un clasificador de scikit-learn según la configuración recibida.
-
-    El diccionario 'model_cfg' proviene del bloque 'model' de un archivo de parámetros
-    ubicado en la carpeta 'params/' (por ejemplo, 'params/logreg.yaml', 'params/decision_tree.yaml', etc.).
-
-    Modelos soportados:
+    Construye un clasificador scikit-learn según el diccionario `model_cfg`.
+    Soporta:
       - LogisticRegression
       - SVC
       - DecisionTreeClassifier
@@ -39,45 +41,38 @@ def build_model(model_cfg):
     mtype = model_cfg.get("type", "LogisticRegression")
 
     if mtype == "LogisticRegression":
-        kwargs = {}
-        for k in ["penalty", "C", "solver", "max_iter", "fit_intercept", "random_state", "n_jobs"]:
-            if k in model_cfg:
-                kwargs[k] = model_cfg[k]
+        kwargs = {k: v for k, v in model_cfg.items() if k in
+                  ["penalty", "C", "solver", "max_iter", "fit_intercept", "random_state", "n_jobs"]}
         kwargs.setdefault("max_iter", 200)
-        kwargs.setdefault("C", 1.0)
         return LogisticRegression(**kwargs)
 
-    if mtype == "SVC":
-        kwargs = {}
-        for k in ["C", "kernel", "gamma", "degree", "coef0", "random_state"]:
-            if k in model_cfg:
-                kwargs[k] = model_cfg[k]
-        # Habilita probabilidades para métricas como ROC AUC
-        kwargs.setdefault("probability", True)
+    elif mtype == "SVC":
+        kwargs = {k: v for k, v in model_cfg.items() if k in
+                  ["C", "kernel", "gamma", "degree", "coef0", "random_state"]}
+        kwargs.setdefault("probability", True)  # Necesario para ROC-AUC
         return SVC(**kwargs)
 
-    if mtype == "DecisionTreeClassifier":
-        kwargs = {}
-        for k in ["criterion", "max_depth", "min_samples_split", "min_samples_leaf", "random_state"]:
-            if k in model_cfg:
-                kwargs[k] = model_cfg[k]
+    elif mtype == "DecisionTreeClassifier":
+        kwargs = {k: v for k, v in model_cfg.items() if k in
+                  ["criterion", "max_depth", "min_samples_split", "min_samples_leaf", "random_state"]}
         return DecisionTreeClassifier(**kwargs)
 
-    if mtype == "RandomForestClassifier":
-        kwargs = {}
-        for k in ["n_estimators", "max_depth", "min_samples_split", "min_samples_leaf", "n_jobs", "random_state"]:
-            if k in model_cfg:
-                kwargs[k] = model_cfg[k]
+    elif mtype == "RandomForestClassifier":
+        kwargs = {k: v for k, v in model_cfg.items() if k in
+                  ["n_estimators", "max_depth", "min_samples_split", "min_samples_leaf", "n_jobs", "random_state"]}
         return RandomForestClassifier(**kwargs)
 
-    raise ValueError(f"Tipo de modelo no soportado: {mtype}")
+    else:
+        raise ValueError(f"Modelo no soportado: {mtype}")
 
+
+# ============================================================
+# 3. Cálculo de métricas
+# ============================================================
 
 def compute_metrics(y_true, y_pred, y_proba=None, metric_list=None):
     """
-    Calcula métricas de evaluación.
-    Soporta: accuracy, precision, recall, f1, roc_auc (requiere y_proba).
-    'metric_list' se define en params.yaml bajo 'metrics'.
+    Calcula accuracy, precision, recall, f1, roc_auc (si hay probabilidades).
     """
     if not metric_list:
         metric_list = ["accuracy"]
@@ -94,81 +89,67 @@ def compute_metrics(y_true, y_pred, y_proba=None, metric_list=None):
             out["f1"] = float(f1_score(y_true, y_pred, zero_division=0))
         elif m == "roc_auc" and y_proba is not None:
             out["roc_auc"] = float(roc_auc_score(y_true, y_proba))
+
     return out
 
 
+# ============================================================
+# 4. Entrenamiento principal
+# ============================================================
+
 def train(params, data_path, model_path, metrics_path):
     """
-    Entrena el modelo definido en 'params', evalúa y persiste artefactos.
-    - Lee datos de 'data_path' (CSV con columna 'churn' como objetivo binario).
-    - Normaliza nombres de columnas a minúsculas para evitar errores por casing.
-    - Realiza train/test split (opcionalmente estratificado).
-    - Registra métricas en JSON y, si procede, en MLflow.
+    Entrena un modelo según parámetros, calcula métricas
+    y persiste el modelo y las métricas.
     """
-    # 1) Carga de datos
+
+    # --- Lectura del dataset ---
     df = pd.read_csv(data_path)
-
-    # 2) Variables predictoras (X) y variable objetivo (y)
-    #    Se normalizan los nombres de columnas a minúsculas para evitar errores por mayúsculas/minúsculas.
     df.columns = df.columns.str.lower()
-    target_col = "churn"
-    if target_col not in df.columns:
-        raise ValueError("No se encontró la columna objetivo 'churn' en el dataset.")
-    X = df.drop(columns=[target_col])
-    y = df[target_col]
 
-    # 3) División en train/test
+    if "churn" not in df.columns:
+        raise ValueError("La columna objetivo 'churn' no está en el dataset.")
+
+    X = df.drop(columns=["churn"])
+    y = df["churn"]
+
+    # --- Train/Test split ---
     split_cfg = params.get("split", {})
-    test_size = split_cfg.get("test_size", 0.2)
-    random_state = split_cfg.get("random_state", 42)
-    use_stratify = split_cfg.get("stratify", True)
-
     Xtr, Xte, ytr, yte = train_test_split(
-        X, y,
-        test_size=test_size,
-        random_state=random_state,
-        stratify=y if use_stratify else None
+        X,
+        y,
+        test_size=split_cfg.get("test_size", 0.2),
+        random_state=split_cfg.get("random_state", 42),
+        stratify=y if split_cfg.get("stratify", True) else None
     )
 
-    # 4) Construcción del modelo
-    model = build_model(params.get("model", {"type": "LogisticRegression"}))
+    # --- Construcción y entrenamiento del modelo ---
+    model = build_model(params.get("model", {}))
+    model.fit(Xtr, ytr)
 
-    # 5) Entrenamiento y logging
-    if USE_MLFLOW:
-        mlflow.set_experiment("telco_churn")
-        with mlflow.start_run():
-            mlflow.log_params(params.get("model", {}))
+    # --- Predicciones ---
+    ypred = model.predict(Xte)
+    yproba = model.predict_proba(Xte)[:, 1] if hasattr(model, "predict_proba") else None
 
-            model.fit(Xtr, ytr)
-            ypred = model.predict(Xte)
+    # --- Métricas ---
+    metrics_to_compute = params.get("metrics", ["accuracy"])
+    metrics = compute_metrics(yte, ypred, yproba, metrics_to_compute)
 
-            yproba = model.predict_proba(Xte)[:, 1] if hasattr(model, "predict_proba") else None
-            metrics_to_compute = params.get("metrics", ["accuracy"])
-            metrics = compute_metrics(yte, ypred, yproba, metrics_to_compute)
+    # --- Guardado del modelo ---
+    joblib.dump(model, model_path)
 
-            for k, v in metrics.items():
-                mlflow.log_metric(k, v)
-
-            joblib.dump(model, model_path)
-            mlflow.log_artifact(model_path)
-    else:
-        model.fit(Xtr, ytr)
-        ypred = model.predict(Xte)
-
-        yproba = model.predict_proba(Xte)[:, 1] if hasattr(model, "predict_proba") else None
-        metrics_to_compute = params.get("metrics", ["accuracy"])
-        metrics = compute_metrics(yte, ypred, yproba, metrics_to_compute)
-
-        joblib.dump(model, model_path)
-
-    # 6) Persistencia de métricas
+    # --- Guardado de métricas ---
     with open(metrics_path, "w") as f:
         json.dump(metrics, f, indent=2)
 
-    # 7) Mensaje breve en consola
+    # --- Log corto en consola ---
     main_metric = "accuracy" if "accuracy" in metrics else list(metrics.keys())[0]
     print(f"{main_metric}={metrics[main_metric]:.3f}")
 
+
+# ============================================================
+# 5. CLI
+# ============================================================
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
