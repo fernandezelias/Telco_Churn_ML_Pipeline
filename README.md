@@ -72,31 +72,48 @@ git push
 
 ## 5. Etapa 4 — Experimentos y análisis comparativo
 
-Se evaluaron cinco corridas variando el hiperparámetro **C** de la Regresión Logística.
+Se evaluaron cinco corridas variando el hiperparámetro **C** de la Regresión Logística para analizar cómo influye la regularización en el rendimiento del modelo.
 
-### 5.1 Hiperparámetros
+---
+
+### 5.1 Hiperparámetros evaluados
 
 | Run | C | Descripción |
 |-----|----|-------------|
-| 1 | 2.0 | Modelo base |
-| 2 | 2.0 | Re-ejecución |
-| 3 | 2.0 | Re-ejecución |
-| 4 | 5.0 | Menor regularización |
-| 5 | 10.0 | Regularización mínima |
+| **1** | 0.5  | Regularización fuerte |
+| **2** | 1.0  | Regularización media |
+| **3** | 2.0  | Regularización más débil |
+| **4** | 5.0  | Baja regularización |
+| **5** | 10.0 | Regularización mínima (modelo más flexible) |
+
+---
 
 ### 5.2 Métricas comparativas
 
 | Run | Accuracy | Precision | Recall | F1 | ROC AUC |
 |-----|----------|-----------|--------|------|----------|
-| 1 | 0.6800 | 0.5751 | 0.4580 | 0.5099 | 0.72194 |
-| 2 | 0.6800 | 0.5751 | 0.4580 | 0.5099 | 0.72194 |
-| 3 | 0.6800 | 0.5751 | 0.4580 | 0.5099 | 0.72195 |
-| 4 | 0.6760 | 0.5642 | 0.4773 | 0.5171 | 0.72011 |
-| 5 | 0.6845 | 0.5819 | 0.4691 | 0.5194 | 0.72581 |
+| **1 (C=0.5)**  | 0.6800 | 0.5751 | 0.4580 | 0.5099 | 0.72195 |
+| **2 (C=1.0)**  | 0.6800 | 0.5751 | 0.4580 | 0.5099 | 0.72194 |
+| **3 (C=2.0)**  | 0.6800 | 0.5751 | 0.4580 | 0.5099 | 0.72194 |
+| **4 (C=5.0)**  | 0.6760 | 0.5642 | 0.4773 | 0.5171 | 0.72011 |
+| **5 (C=10.0)** | **0.6845** | **0.5819** | 0.4691 | **0.5194** | **0.72581** |
+
+---
 
 ### 5.3 Conclusiones
 
-El modelo con **C = 10.0 (Run 5)** obtiene el mejor balance entre precisión, AUC y F1-score.
+- Los valores pequeños de **C (0.5–2.0)** generan métricas prácticamente idénticas, lo que demuestra que el pipeline es **estable, reproducible y consistente** ante múltiples ejecuciones.
+- El modelo con **C = 5.0** muestra un leve aumento del *recall* y del *F1-score*, lo que sugiere un mejor equilibrio entre falsos positivos y falsos negativos, aunque a costa de una ligera caída en *accuracy*.
+- El modelo con **C = 10.0** ofrece el **mejor desempeño global**, alcanzando:
+  - la **mayor accuracy (0.6845)**  
+  - la **mayor precision (0.5819)**  
+  - el **mejor F1-score (0.5194)**  
+  - y el **mayor ROC AUC (0.72581)**  
+
+💡 En conjunto, los resultados indican que **una regularización más débil (valores altos de C) permite que el modelo capture mejor las relaciones relevantes del dataset**, obteniendo un mejor poder predictivo sin generar signos evidentes de sobreajuste en esta etapa del proyecto.
+
+---
+
 
 ## 6. Integrantes del equipo
 

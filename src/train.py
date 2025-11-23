@@ -5,18 +5,17 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
-)
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 
-# Activa MLflow si existe la variable de entorno (útil con DagsHub)
-USE_MLFLOW = False
-try:
-    import mlflow
-    if os.getenv("MLFLOW_TRACKING_URI"):
-        USE_MLFLOW = True
-except Exception:
-    USE_MLFLOW = False
+import dagshub
+import mlflow
+
+# Activa MLflow en DagsHub
+dagshub.init(repo_owner='fernandezelias',
+             repo_name='Telco_Churn_ML_Pipeline',
+             mlflow=True)
+
+USE_MLFLOW = True
 
 
 def load_params(pfile):
