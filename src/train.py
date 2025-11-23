@@ -13,10 +13,9 @@ import mlflow
 # Activa MLflow en DagsHub
 dagshub.init(repo_owner='fernandezelias',
              repo_name='Telco_Churn_ML_Pipeline',
-             mlflow=True)
+             mlflow=False) # Cambiar a True si se desea usar MLflow
 
-USE_MLFLOW = True
-
+USE_MLFLOW = False
 
 def load_params(pfile):
     """Carga los parámetros desde un archivo YAML."""
