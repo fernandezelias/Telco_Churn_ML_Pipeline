@@ -534,6 +534,27 @@ Este módulo permite:
 
 ---
 
+## Conclusiones
+
+El desarrollo del **pipeline Telco Churn** permitió integrar, de manera articulada, técnicas de Machine Learning con prácticas modernas de ingeniería de datos. A lo largo de sus distintas etapas, el proyecto avanzó desde la ingesta y limpieza inicial del dataset hasta la evaluación avanzada y la generación de artefactos aptos para un entorno de producción.
+
+El uso de **DVC** garantizó la trazabilidad completa: cada dataset, modelo, métrica y gráfico quedó versionado, lo que asegura reproducibilidad total. Por su parte, **GitHub Actions** habilitó validaciones automáticas mediante CI, agregando robustez y control de calidad en cada *push* y *pull request*. La integración con **DagsHub** facilitó el seguimiento histórico de experimentos y métricas, permitiendo comparar modelos de manera transparente.
+
+En cuanto a los resultados modelísticos, la **Regresión Logística** con regularización débil (C=10) ofreció el mejor equilibrio entre precisión, recall, F1 y AUC. El experimento con **Árbol de Decisión** mostró estabilidad y compatibilidad con el pipeline, aunque sin superar al modelo base, evidenciando la importancia de los experimentos controlados en escenarios de churn.
+
+Finalmente, la incorporación del módulo `evaluate.py` permitió extender el pipeline hacia una fase previa al despliegue, generando métricas avanzadas y visualizaciones propias de un entorno productivo.
+
+En conjunto, el proyecto demuestra:
+
+- un flujo de trabajo profesional basado en control de versiones, datos reproducibles y CI/CD;  
+- la capacidad de evaluar y comparar modelos bajo un mismo pipeline;  
+- la preparación técnica para extender el proyecto hacia APIs (FastAPI) o dashboards (Streamlit);  
+- y la consolidación de buenas prácticas de ingeniería y ciencia de datos aplicadas a un caso real de churn.
+
+**El pipeline queda así completamente documentado, versionado y preparado para escalar hacia entornos de producción o nuevas iteraciones experimentales.**
+
+---
+
 ## Integrantes del equipo
 
 - Elías Fernández — elias.fernandez@istea.com.ar
