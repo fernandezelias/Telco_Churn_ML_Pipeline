@@ -1,0 +1,30 @@
+# ==============================================================
+# Telco Churn - decision_tree.yaml
+# Configuración del modelo Decision Tree, split y rutas
+# ==============================================================
+
+model:
+  type: DecisionTreeClassifier      # Modelo Decision Tree
+  criterion: gini                   # Función de impureza
+  max_depth: 5                      # Profundidad máxima del árbol
+  min_samples_split: 2              # Mínimo de muestras para dividir
+  min_samples_leaf: 1               # Mínimo de muestras por hoja
+  random_state: 42                  # Reproducibilidad del modelo
+
+split:
+  test_size: 0.2                    # 20% de datos para test
+  random_state: 42                  # Reutiliza la misma semilla
+  stratify: true                    # Mantiene proporción 0/1
+
+metrics:
+  - accuracy
+  - precision
+  - recall
+  - f1
+  - roc_auc
+
+path:
+  raw_data: data/raw/telco_churn.csv         # Dataset de entrada
+  model_path: models/telco_tree.pkl          # Archivo del modelo entrenado
+  metrics_path: metrics_tree.json            # Métricas de evaluación
+  preds_path: data/outputs/preds_tree.csv    # Archivo de predicciones
