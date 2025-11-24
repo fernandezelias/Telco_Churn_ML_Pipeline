@@ -12,19 +12,34 @@ Esto permite garantizar la trazabilidad completa del proceso, desde la ingesta d
 ```
 Telco_Churn_ML_Pipeline/
 │
+├── .dvc/
+│   └── config
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+│
 ├── data/
 │   ├── raw/
 │   ├── processed/
 │   └── prepared/
 │
 ├── models/
+│   ├── telco_logreg.pkl
+│   ├── telco_tree.pkl
+│   └── test_model.pkl
+│
 ├── params/
+│   ├── logreg.yaml
+│   └── decision_tree.yaml
+│
 ├── src/
 │   ├── make_data.py
 │   ├── preprocess_data.py
 │   └── train.py
 │
 ├── dvc.yaml
+├── dvc.lock
 ├── requirements.txt
 └── README.md
 ```
@@ -162,6 +177,173 @@ Para validar el funcionamiento:
 ## CI Status
 
 ✔️ **CI Pipeline validated** — La integración continua con GitHub Actions reproduce el pipeline completo sin errores.
+
+---
+
+## 7. Etapa 6 — Iteración colaborativa y experimentación con ramas
+
+La etapa 6 consistió en simular un proceso colaborativo basado en **ramas**, **pull requests** y **validación automática por CI**, siguiendo un flujo profesional de experimentación con modelos.
+
+El objetivo fue:
+- Probar una variante del modelo base (Árbol de Decisión).
+- Registrar sus parámetros y artefactos mediante DVC.
+- Validar su funcionamiento con el pipeline completo en GitHub Actions.
+- Integrarlo a `main` mediante **Pull Request** si el experimento era exitoso.
+
+---
+
+### 7.1 Creación de una rama de experimento
+
+Se creó una nueva rama de desarrollo:
+
+```
+git checkout -b feat/decision-tree
+```
+
+Esta rama aloja exclusivamente el experimento con un **DecisionTreeClassifier**.
+
+---
+
+### 7.2 Nuevo archivo de parámetros
+
+Se añadió un archivo específico:
+
+```
+params/decision_tree.yaml
+```
+
+Con la siguiente configuración:
+
+- `model.type: DecisionTreeClassifier`
+- `criterion: gini`
+- `max_depth: 5`
+- `min_samples_split: 10`
+- `random_state: 42`
+
+Esto permite ejecutar el mismo pipeline DVC con un modelo totalmente diferente al de la rama `main`.
+
+---
+
+### 7.3 Modificación temporal del pipeline (solo en la rama de experimento)
+
+La etapa `train` del `dvc.yaml` fue actualizada para usar:
+
+- `params/decision_tree.yaml`
+- `models/telco_tree.pkl`
+- `metrics_tree.json`
+
+Ejemplo:
+
+```
+cmd: python src/train.py --data data/prepared/telco_churn_prepared.csv                          --model models/telco_tree.pkl                          --params params/decision_tree.yaml                          --metrics metrics_tree.json
+```
+
+Esto garantizó que **el experimento no alterara el modelo de la rama principal**.
+
+---
+
+### 7.4 Ejecución del pipeline en local
+
+Desde la misma rama:
+
+```
+dvc repro
+```
+
+Salida obtenida:
+
+```
+accuracy=0.684
+```
+
+Esto indica que el **árbol de decisión** logró una performance inicial similar al mejor modelo de regresión logística (C=10.0).
+
+---
+
+### 7.5 Registro del experimento
+
+Tras ejecutarlo, los artefactos fueron enviados al remoto de DVC:
+
+```
+dvc push
+git add .
+git commit -m "Experimento: Decision Tree con nuevo params y artefactos DVC"
+git push origin feat/decision-tree
+```
+
+---
+
+### 7.6 Pull Request del experimento
+
+Se abrió un PR desde:
+
+```
+feat/decision-tree → main
+```
+
+GitHub Actions ejecutó automáticamente el workflow completo de CI:
+
+- `dvc pull`
+- `dvc repro`
+- Validación del pipeline end-to-end
+
+El resultado fue exitoso:
+
+```
+✔ All checks have passed
+✔ Telco Churn CI / build (pull_request)
+```
+
+Esto confirma que el experimento es **reproducible**, **estable** y compatible con todo el pipeline.
+
+---
+
+### 7.7 Métricas del Decision Tree
+
+Se generaron las siguientes métricas (según `metrics_tree.json`):
+
+| Métrica | Valor |
+|--------|--------|
+| Accuracy | **0.684** |
+| Precision | similar al baseline |
+| Recall | ligeramente inferior |
+| F1-score | estable |
+| ROC AUC | comparable al modelo logístico |
+
+**Conclusión técnica:**  
+El Decision Tree no mejoró sustancialmente al mejor modelo de Regresión Logística (C=10.0), pero sí mostró estabilidad y compatibilidad total con el pipeline.
+
+---
+
+### 7.8 Merge del experimento a `main`
+
+Aunque el Decision Tree **no superó** al mejor modelo logístico, se procedió al *merge* porque el objetivo de la Etapa 6 es **demostrar el flujo de trabajo colaborativo**:
+
+- Creación de rama
+- Ejecución de experimento aislado
+- Validación automática por CI
+- Fusión de cambios controlada
+
+El merge fue completado con:
+
+```
+Merge pull request #3 from fernandezelias/feat/decision-tree
+```
+
+Esto deja registrado el historial completo del experimento y la integración en `main`, cumpliendo con el entregable solicitado.
+
+---
+
+### 7.9 Resultado final de la etapa
+
+✔ Se crearon ramas de experimento (`feat-*`).  
+✔ Se ejecutaron modelos alternativos.  
+✔ Se versionaron parámetros, modelos y métricas con DVC.  
+✔ Se validó automáticamente cada PR con CI.  
+✔ Se realizó el merge final hacia `main`.  
+✔ Se documentó todo el proceso.
+
+**Entregable cumplido:** historial de PRs, ramas y merges correctamente generados y registrados en GitHub.
 
 ---
 
