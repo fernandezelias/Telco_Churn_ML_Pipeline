@@ -83,14 +83,16 @@ Telco_Churn_ML_Pipeline/
 
 ## Diagrama del pipeline DVC
 
+<details>
+<summary><strong>Ver diagrama del pipeline DVC (GitHub compatible)</strong></summary>
+
 ```mermaid
 flowchart LR
-
     A[Data Raw<br>data/raw/] --> B[make_data.py<br>Data Processed]
     B --> C[preprocess_data.py<br>Data Prepared]
     C --> D[train.py<br>Modelo Entrenado]
     D --> E[evaluate.py<br>Métricas + Curva ROC]
-```
+
 
 ---
 
