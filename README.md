@@ -142,7 +142,7 @@ Modelo base entrenado, métricas registradas, hiperparámetros centralizados y a
 
 ---
 
-## Etapa 4 – Ejecución de experimentos y análisis comparativo
+### Etapa 4 – Ejecución de experimentos y análisis comparativo
 
 En esta etapa se realizaron múltiples ejecuciones del modelo base modificando el hiperparámetro de regularización **C** de la Regresión Logística. El objetivo fue evaluar cómo influye la fuerza de regularización en el rendimiento del modelo y seleccionar la mejor configuración.
 
@@ -154,7 +154,7 @@ Para gestionar los experimentos se utilizó **MLflow en DagsHub**, lo que permit
 
 ---
 
-### 4.1 Configuración de credenciales para MLflow (DagsHub)
+#### 4.1 Configuración de credenciales para MLflow (DagsHub)
 
 Antes de ejecutar los experimentos, se configuraron las variables de entorno:
 
@@ -166,7 +166,7 @@ set MLFLOW_TRACKING_PASSWORD=<TOKEN_PERSONAL>
 
 ---
 
-### 4.2 Ejecución del pipeline para cada experimento
+#### 4.2 Ejecución del pipeline para cada experimento
 
 Para cada valor de **C**, se actualizó el archivo `params/logreg.yaml` y luego se ejecutó:
 
@@ -178,7 +178,7 @@ Esto garantizó una ejecución completamente reproducible del pipeline, regenera
 
 ---
 
-### 4.3 Versionado de artefactos
+#### 4.3 Versionado de artefactos
 
 Después de cada experimento, se versionaron los cambios con DVC y Git:
 
@@ -191,7 +191,7 @@ git push
 
 ---
 
-### 4.4 Resultados comparativos
+#### 4.4 Resultados comparativos
 
 Se evaluaron cinco configuraciones:
 
@@ -205,7 +205,7 @@ Se evaluaron cinco configuraciones:
 
 ---
 
-### 4.5 Conclusión de la etapa
+#### 4.5 Conclusión de la etapa
 
 - Los modelos con regularización más fuerte (C=0.5–2.0) mostraron métricas casi idénticas, reflejando estabilidad del pipeline.  
 - El modelo con **C = 5.0** mejoró levemente recall y F1, aunque con menor accuracy.  
@@ -216,7 +216,7 @@ Se evaluaron cinco configuraciones:
 
 ---
 
-## Etapa 5 — CI/CD con GitHub Actions
+### Etapa 5 — CI/CD con GitHub Actions
 
 La etapa 5 incorpora un proceso de **Integración Continua (CI)** utilizando **GitHub Actions**, con el objetivo de asegurar que el pipeline completo (gestionado con DVC) se ejecute correctamente cada vez que se realiza un *push* o *pull request* hacia el repositorio.
 
@@ -224,7 +224,7 @@ Este mecanismo permite validar automáticamente la reproducibilidad del workflow
 
 ---
 
-### 5.1 Objetivo de la etapa
+#### 5.1 Objetivo de la etapa
 
 El workflow de CI debe garantizar que:
 
@@ -237,7 +237,7 @@ El workflow de CI debe garantizar que:
 
 ---
 
-### 5.2 Configuración del workflow
+#### 5.2 Configuración del workflow
 
 El archivo principal del pipeline de CI se encuentra en:
 
@@ -258,7 +258,7 @@ Se retiraron dependencias de MLflow en `train.py` para evitar fallos en el entor
 
 ---
 
-### 5.3 Validación mediante Pull Request
+#### 5.3 Validación mediante Pull Request
 
 1. Se creó la rama:
    ```
@@ -276,7 +276,7 @@ Se retiraron dependencias de MLflow en `train.py` para evitar fallos en el entor
 
 ---
 
-### 5.4 Estado final de la etapa
+#### 5.4 Estado final de la etapa
 
 ✔ Workflow CI funcionando  
 ✔ Validación automática vía Pull Request  
@@ -288,7 +288,7 @@ Se retiraron dependencias de MLflow en `train.py` para evitar fallos en el entor
 
 ---
 
-## Etapa 6 — Iteración colaborativa y experimentación con ramas
+### Etapa 6 — Iteración colaborativa y experimentación con ramas
 
 La etapa 6 consistió en simular un proceso colaborativo basado en **ramas**, **pull requests** y **validación automática por CI**, siguiendo un flujo profesional de experimentación con modelos.
 
@@ -300,7 +300,7 @@ El objetivo fue:
 
 ---
 
-### 6.1 Creación de una rama de experimento
+#### 6.1 Creación de una rama de experimento
 
 Se creó una nueva rama de desarrollo:
 
@@ -312,7 +312,7 @@ Esta rama aloja exclusivamente el experimento con un **DecisionTreeClassifier**.
 
 ---
 
-### 6.2 Nuevo archivo de parámetros
+#### 6.2 Nuevo archivo de parámetros
 
 Se añadió un archivo específico:
 
@@ -332,7 +332,7 @@ Esto permite ejecutar el mismo pipeline DVC con un modelo totalmente diferente a
 
 ---
 
-### 6.3 Modificación temporal del pipeline
+#### 6.3 Modificación temporal del pipeline
 
 La etapa `train` del `dvc.yaml` fue ajustada para utilizar:
 
@@ -353,7 +353,7 @@ Esto garantizó que el experimento no afectara la rama principal.
 
 ---
 
-### 6.4 Ejecución del pipeline en local
+#### 6.4 Ejecución del pipeline en local
 
 ```
 dvc repro
@@ -369,7 +369,7 @@ El Decision Tree mostró un rendimiento similar al mejor modelo logístico.
 
 ---
 
-### 6.5 Registro del experimento
+#### 6.5 Registro del experimento
 
 ```
 dvc push
@@ -380,7 +380,7 @@ git push origin feat/decision-tree
 
 ---
 
-### 6.6 Pull Request del experimento
+#### 6.6 Pull Request del experimento
 
 Se abrió un PR:
 
@@ -403,7 +403,7 @@ Resultado:
 
 ---
 
-### 6.7 Métricas del Decision Tree
+#### 6.7 Métricas del Decision Tree
 
 | Métrica | Valor |
 |--------|--------|
@@ -415,7 +415,7 @@ Resultado:
 
 ---
 
-### 6.8 Merge del experimento a `main`
+#### 6.8 Merge del experimento a `main`
 
 Aunque el modelo no superó al logístico, se realizó el merge porque:
 
@@ -431,7 +431,7 @@ Merge pull request #3 from fernandezelias/feat/decision-tree
 
 ---
 
-### 6.9 Resultado final de la etapa
+#### 6.9 Resultado final de la etapa
 
 ✔ Ramas de experimento creadas  
 ✔ Modelos alternativos ejecutados  
@@ -444,13 +444,13 @@ Merge pull request #3 from fernandezelias/feat/decision-tree
 
 ---
 
-# Etapa 7 — Evaluación avanzada y artefactos de producción (Bonus)
+## Etapa 7 — Evaluación avanzada y artefactos de producción (Bonus)
 
 En la etapa 7 se añadió un módulo de **evaluación avanzada del modelo**, generando artefactos propios de un entorno de producción: métricas completas y curva ROC.
 
 ---
 
-## 7.1 Nuevo módulo: `evaluate.py`
+### 7.1 Nuevo módulo: `evaluate.py`
 
 Se incorporó el archivo:
 
@@ -468,7 +468,7 @@ Este script permite:
 
 ---
 
-## 7.2 Integración al pipeline DVC
+### 7.2 Integración al pipeline DVC
 
 Se añadió la etapa `evaluate` al `dvc.yaml`:
 
@@ -486,7 +486,7 @@ evaluate:
 
 ---
 
-## 7.3 Ejecución del módulo
+### 7.3 Ejecución del módulo
 
 ```
 dvc repro
@@ -507,7 +507,7 @@ Evaluación completada.
 
 ---
 
-## 7.4 Artefactos generados
+### 7.4 Artefactos generados
 
 | Artefacto | Descripción |
 |----------|-------------|
@@ -522,7 +522,7 @@ dvc push
 
 ---
 
-## 7.5 Preparación para producción
+### 7.5 Preparación para producción
 
 Este módulo permite:
 
