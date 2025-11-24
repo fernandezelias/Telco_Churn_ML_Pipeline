@@ -1,5 +1,10 @@
 # Proyecto Telco Churn – Pipeline DVC y MLflow
 
+## Resumen ejecutivo
+
+Este proyecto implementa un pipeline completo y reproducible de Machine Learning para predecir el churn en una empresa de telecomunicaciones, integrando herramientas de MLOps modernas como **DVC**, **MLflow**, **GitHub Actions** y **DagsHub**. A lo largo de siete etapas progresivas, el trabajo aborda desde la ingesta y limpieza de datos hasta la experimentación controlada, validación automática mediante CI/CD y evaluación avanzada del modelo para su eventual despliegue.  
+El pipeline permite versionar datasets, modelos y artefactos, registrar métricas comparables y garantizar la reproducibilidad total mediante `dvc repro`. El mejor modelo alcanzado (Regresión Logística con regularización débil) se integra a un flujo profesional que refleja buenas prácticas de ingeniería y ciencia de datos aplicadas a un caso real de churn.
+
 ## Descripción general
 
 Este proyecto se desarrolla en el marco de la materia **Laboratorio de Minería de Datos II (ISTEA)** y tiene como objetivo construir un **pipeline completo, reproducible y trazable de Machine Learning** para predecir la **renuncia de clientes (Churn)** en una empresa de telecomunicaciones.
@@ -58,6 +63,33 @@ Telco_Churn_ML_Pipeline/
 ├── dvc.lock
 ├── requirements.txt
 └── README.md
+```
+
+---
+
+## Resumen de etapas y entregables
+
+| Etapa | Descripción | Entregable principal |
+|-------|-------------|----------------------|
+| **1 — Setup inicial** | Configuración del entorno, repositorio, estructura base y conexión con DagsHub. | Repo estructurado + dataset crudo versionado en DVC. |
+| **2 — Limpieza y features** | Ingesta, limpieza, codificación, escalado y generación de variables derivadas. | Dataset limpio y preparado versionado en DVC. |
+| **3 — Entrenamiento de modelo** | Implementación de `train.py`, lectura de parámetros y registro de métricas. | Modelo entrenado + métricas registradas + artefactos versionados. |
+| **4 — Experimentos** | Variación controlada del hiperparámetro C y análisis comparativo. | Reporte de experimentos y selección del mejor modelo. |
+| **5 — CI/CD con GitHub Actions** | Workflow de validación automática del pipeline (`dvc pull` + `dvc repro`). | Pull Request validado correctamente por CI. |
+| **6 — Iteración colaborativa** | Ramas `feat-*`, PRs, experimentos aislados y validación con CI. | Historial de ramas, PRs y merges documentados. |
+| **7 — Evaluación avanzada (Producción)** | `evaluate.py`, métricas extendidas, curva ROC y artefactos finales. | Pipeline listo para evaluación avanzada y pre-despliegue. |
+
+---
+
+## Diagrama del pipeline DVC
+
+```mermaid
+flowchart LR
+
+    A[Data Raw<br>data/raw/] --> B[make_data.py<br>Data Processed]
+    B --> C[preprocess_data.py<br>Data Prepared]
+    C --> D[train.py<br>Modelo Entrenado]
+    D --> E[evaluate.py<br>Métricas + Curva ROC]
 ```
 
 ---
