@@ -16,12 +16,12 @@ stages:
       - data/prepared/telco_churn_prepared.csv
 
   train:
-    cmd: python src/train.py --data data/prepared/telco_churn_prepared.csv --model models/telco_logreg.pkl --params params/logreg.yaml --metrics metrics.json
+    cmd: python src/train.py --data data/prepared/telco_churn_prepared.csv --model models/telco_tree.pkl --params params/decision_tree.yaml --metrics metrics_tree.json
     deps:
       - src/train.py
       - data/prepared/telco_churn_prepared.csv
-      - params/logreg.yaml
+      - params/decision_tree.yaml
     outs:
-      - models/telco_logreg.pkl
+      - models/telco_tree.pkl
     metrics:
-      - metrics.json
+      - metrics_tree.json
