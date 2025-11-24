@@ -25,3 +25,13 @@ stages:
       - models/telco_tree.pkl
     metrics:
       - metrics_tree.json
+
+  evaluate:
+    cmd: python src/evaluate.py --model models/telco_tree.pkl --data data/prepared/telco_churn_prepared.csv --metrics reports/metrics_tree_eval.json --plot reports/roc_tree.png
+    deps:
+      - src/evaluate.py
+      - models/telco_tree.pkl
+      - data/prepared/telco_churn_prepared.csv
+    outs:
+      - reports/metrics_tree_eval.json
+      - reports/roc_tree.png
