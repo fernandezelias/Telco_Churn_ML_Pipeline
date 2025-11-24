@@ -353,10 +353,11 @@ Esto deja registrado el historial completo del experimento y la integración en 
 - Fiorela Macheroni — fiorela.macheroni@istea.com.ar
 - Sebastián Fuentes — sebastian.fuentes@istea.com.ar
 
-**Institución:** ISTEA  
-**Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial  
+**Institución:** ISTEA
+
+**Carrera:** Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial
+
 **Materia:** Laboratorio de Minería de Datos  
-**Etapa entregada:** Etapa 4–5 – Experimentos, comparación de modelos y CI/CD
 
 **Repositorios:**
 - GitHub: https://github.com/fernandezelias/Telco_Churn_ML_Pipeline
