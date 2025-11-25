@@ -210,9 +210,19 @@ git push
 
 ---
 
-#### 4.4 Resultados comparativos
+#### 4.4 Comparación exhaustiva de modelos
 
-Se evaluaron cinco configuraciones:
+Además del análisis general de la etapa, se realizó una comparación más detallada del comportamiento del modelo de Regresión Logística frente a diferentes niveles de regularización (*C*). Esta comparación extendida permite evaluar no solo las métricas finales, sino también la estabilidad, consistencia y sensibilidad del modelo frente a cambios en su configuración.
+
+##### Comportamiento general del modelo
+La regularización controla la complejidad del modelo:  
+- Valores **pequeños** de *C* → **mayor regularización** → modelo más simple y estable.  
+- Valores **grandes** de *C* → **menor regularización** → modelo más flexible, potencialmente más sensible al ruido.
+
+En un problema de churn —donde existe desbalance moderado y múltiples variables categóricas— la estabilidad del modelo es tan importante como la métrica final.
+
+##### Resultados obtenidos
+La siguiente tabla resume las métricas registradas para las cinco configuraciones evaluadas:
 
 | Run | C | Accuracy | Precision | Recall | F1 | ROC AUC |
 |-----|----|----------|-----------|--------|------|----------|
@@ -222,9 +232,32 @@ Se evaluaron cinco configuraciones:
 | **4** | 5.0  | 0.6760 | 0.5642 | 0.4773 | 0.5171 | 0.72011 |
 | **5** | 10.0 | **0.6845** | **0.5819** | 0.4691 | **0.5194** | **0.72581** |
 
+##### Interpretación detallada
+- **Alta estabilidad en C=0.5, 1.0 y 2.0:**  
+  Estas configuraciones producen métricas prácticamente idénticas. Esto indica que la regresión logística, con regularización moderada-fuerte, se comporta de manera muy estable frente a la variabilidad del dataset.
+
+- **Primer salto relevante en C=5.0:**  
+  Aumenta levemente el *recall* (0.4773) y el *F1-score* (0.5171), lo que sugiere una mayor sensibilidad hacia la clase positiva, aunque con un pequeño sacrificio en *accuracy*.
+
+- **Mejor configuración en C=10.0:**  
+  Es la única que mejora simultáneamente:
+  - **Accuracy**
+  - **Precision**
+  - **F1-score**
+  - **ROC AUC**  
+
+  Logra el equilibrio más sólido entre discriminar correctamente a la clase positiva (churn) y mantener un buen desempeño general.
+
+##### Síntesis técnica
+- La regresión logística es poco sensible a valores de regularización entre 0.5 y 2.0, lo que demuestra que el dataset está bien preparado y que el modelo lineal encuentra patrones estables.  
+- Las configuraciones de regularización baja (mayor flexibilidad) permiten capturar relaciones adicionales que mejoran levemente el rendimiento sin indicar sobreajuste.  
+- El modelo con **C=10** se destaca como mejor candidato para posteriores etapas del pipeline.
+
+Esta comparación extendida complementa la tabla principal y justifica la selección final de hiperparámetros para continuar con el pipeline.
+
 ---
 
-#### 4.5 Conclusión de la etapa
+### 4.5 Conclusión de la etapa
 
 - Los modelos con regularización más fuerte (C=0.5–2.0) mostraron métricas casi idénticas, reflejando estabilidad del pipeline.  
 - El modelo con **C = 5.0** mejoró levemente recall y F1, aunque con menor accuracy.  
