@@ -35,53 +35,53 @@ stages:
       size: 1022255
   train:
     cmd: python src/train.py --data data/prepared/telco_churn_prepared.csv 
-      --model models/telco_tree.pkl --params params/decision_tree.yaml --metrics
-      metrics_tree.json
+      --model models/telco_logreg.pkl --params params/logreg.yaml --metrics 
+      metrics_logreg.json
     deps:
     - path: data/prepared/telco_churn_prepared.csv
       hash: md5
       md5: 004465a82c600845f99d035943fe597f
       size: 1022255
-    - path: params/decision_tree.yaml
+    - path: params/logreg.yaml
       hash: md5
-      md5: af3189636f3178982f6562df53ffb4fc
-      size: 1205
+      md5: fca658188994e98cb170bb6cef151210
+      size: 1327
     - path: src/train.py
       hash: md5
       md5: 61191b5c113da3703accad6dc79aed43
       size: 5666
     outs:
-    - path: metrics_tree.json
+    - path: metrics_logreg.json
       hash: md5
-      md5: 254d8652e8ff84b222575a8d7f009662
-      size: 159
-    - path: models/telco_tree.pkl
+      md5: 3939b23ee1384bfaec651db13ea49b34
+      size: 156
+    - path: models/telco_logreg.pkl
       hash: md5
-      md5: 72d346ffbed9a4fe710922f4ac46181f
-      size: 7049
+      md5: 655c96a7702ce1566906339a03b341eb
+      size: 1759
   evaluate:
-    cmd: python src/evaluate.py --model models/telco_tree.pkl --data 
+    cmd: python src/evaluate.py --model models/telco_logreg.pkl --data 
       data/prepared/telco_churn_prepared.csv --metrics 
-      reports/metrics_tree_eval.json --plot reports/roc_tree.png
+      reports/metrics_logreg_eval.json --plot reports/roc_logreg.png
     deps:
     - path: data/prepared/telco_churn_prepared.csv
       hash: md5
       md5: 004465a82c600845f99d035943fe597f
       size: 1022255
-    - path: models/telco_tree.pkl
+    - path: models/telco_logreg.pkl
       hash: md5
-      md5: 72d346ffbed9a4fe710922f4ac46181f
-      size: 7049
+      md5: 655c96a7702ce1566906339a03b341eb
+      size: 1759
     - path: src/evaluate.py
       hash: md5
       md5: a9592892ef097dce5584975bf9024954
       size: 1915
     outs:
-    - path: reports/metrics_tree_eval.json
+    - path: reports/metrics_logreg_eval.json
       hash: md5
-      md5: 5c3269902e9b521dae7c8c44bdef6f6d
-      size: 159
-    - path: reports/roc_tree.png
+      md5: ca4fd76ba3b2d9938cda75a0d3e719c8
+      size: 158
+    - path: reports/roc_logreg.png
       hash: md5
-      md5: ec3e08d6c4d22c4190c04cdc13f4eca7
-      size: 27225
+      md5: c9084fd8d244609526cccea2751c3230
+      size: 26030

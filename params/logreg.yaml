@@ -1,12 +1,12 @@
 # ==============================================================
-# Telco Churn - params.yaml
-# Configuración de modelo, división y rutas
+# Telco Churn - logreg.yaml
+# Configuración del modelo Logistic Regression, split y rutas
 # ==============================================================
 
 model:
   type: LogisticRegression     # Modelo base (clasificación binaria)
   penalty: l2                  # Regularización L2
-  C: 10.0                       # Inverso de la fuerza de regularización
+  C: 10.0                      # Inverso de la fuerza de regularización
   solver: lbfgs                # Algoritmo de optimización recomendado
   max_iter: 100                # Iteraciones máximas
   fit_intercept: true          # Incluye término independiente
