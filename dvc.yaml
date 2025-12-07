@@ -6,7 +6,7 @@ stages:
       - data/raw/telco_churn.csv
     outs:
       - data/processed/telco_churn.csv
-  
+
   preprocess:
     cmd: python src/preprocess_data.py --input data/processed/telco_churn.csv --out data/prepared/telco_churn_prepared.csv
     deps:
@@ -15,8 +15,28 @@ stages:
     outs:
       - data/prepared/telco_churn_prepared.csv
 
-  train:
-    cmd: python src/train.py --data data/prepared/telco_churn_prepared.csv --model models/telco_tree.pkl --params params/decision_tree.yaml --metrics metrics_tree.json
+  train_logreg:
+    cmd: python src/train.py --data data/prepared/telco_churn_prepared.csv --model models/telco_logreg.pkl --params params/logreg.yaml --metrics metrics/logreg_metrics.json
+    deps:
+      - src/train.py
+      - data/prepared/telco_churn_prepared.csv
+      - params/logreg.yaml
+    outs:
+      - models/telco_logreg.pkl
+    metrics:
+      - metrics/logreg_metrics.json
+    params:
+      - params/logreg.yaml:
+        - model.C
+        - model.penalty
+        - model.solver
+        - model.max_iter
+        - model.fit_intercept
+        - model.random_state
+        - split.test_size
+
+  train_tree:
+    cmd: python src/train.py --data data/prepared/telco_churn_prepared.csv --model models/telco_tree.pkl --params params/decision_tree.yaml --metrics metrics/tree_metrics.json
     deps:
       - src/train.py
       - data/prepared/telco_churn_prepared.csv
@@ -24,14 +44,12 @@ stages:
     outs:
       - models/telco_tree.pkl
     metrics:
-      - metrics_tree.json
-
-  evaluate:
-    cmd: python src/evaluate.py --model models/telco_tree.pkl --data data/prepared/telco_churn_prepared.csv --metrics reports/metrics_tree_eval.json --plot reports/roc_tree.png
-    deps:
-      - src/evaluate.py
-      - models/telco_tree.pkl
-      - data/prepared/telco_churn_prepared.csv
-    outs:
-      - reports/metrics_tree_eval.json
-      - reports/roc_tree.png
+      - metrics/tree_metrics.json
+    params:
+      - params/decision_tree.yaml:
+        - model.max_depth
+        - model.criterion
+        - model.min_samples_split
+        - model.min_samples_leaf
+        - model.random_state
+        - split.test_size
