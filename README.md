@@ -621,6 +621,6 @@ En conjunto, el proyecto demuestra:
 
 **Materia:** Laboratorio de Minería de Datos  
 
-**Repositorios disponible en:**
+**Repositorios:**
 - GitHub: https://github.com/fernandezelias/Telco_Churn_ML_Pipeline
 - DagsHub: https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline
