@@ -102,3 +102,55 @@ stages:
       hash: md5
       md5: 72d346ffbed9a4fe710922f4ac46181f
       size: 7049
+  evaluate_logreg:
+    cmd: python src/evaluate.py --model models/telco_logreg.pkl --data 
+      data/prepared/telco_churn_prepared.csv --metrics reports/logreg_eval.json 
+      --plot reports/roc_logreg.png
+    deps:
+    - path: data/prepared/telco_churn_prepared.csv
+      hash: md5
+      md5: 004465a82c600845f99d035943fe597f
+      size: 1022255
+    - path: models/telco_logreg.pkl
+      hash: md5
+      md5: 742be0daa22dc57e25d7bc7a5db4d267
+      size: 1759
+    - path: src/evaluate.py
+      hash: md5
+      md5: a9592892ef097dce5584975bf9024954
+      size: 1915
+    outs:
+    - path: reports/logreg_eval.json
+      hash: md5
+      md5: bbc783d394f80671d2c975c56cd32b3f
+      size: 158
+    - path: reports/roc_logreg.png
+      hash: md5
+      md5: 4351d831f7ff5b3ab37282d4f60cba5a
+      size: 26104
+  evaluate_tree:
+    cmd: python src/evaluate.py --model models/telco_tree.pkl --data 
+      data/prepared/telco_churn_prepared.csv --metrics reports/tree_eval.json 
+      --plot reports/roc_tree.png
+    deps:
+    - path: data/prepared/telco_churn_prepared.csv
+      hash: md5
+      md5: 004465a82c600845f99d035943fe597f
+      size: 1022255
+    - path: models/telco_tree.pkl
+      hash: md5
+      md5: 72d346ffbed9a4fe710922f4ac46181f
+      size: 7049
+    - path: src/evaluate.py
+      hash: md5
+      md5: a9592892ef097dce5584975bf9024954
+      size: 1915
+    outs:
+    - path: reports/roc_tree.png
+      hash: md5
+      md5: ec3e08d6c4d22c4190c04cdc13f4eca7
+      size: 27225
+    - path: reports/tree_eval.json
+      hash: md5
+      md5: 5c3269902e9b521dae7c8c44bdef6f6d
+      size: 159
