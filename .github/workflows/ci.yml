@@ -24,25 +24,31 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install dvc[s3]
 
-      # Autenticación para remoto S3 de DagsHub (requisito para dvc pull/push)
-      - name: Configure AWS credentials for DVC
+      # Configuración del remoto DagsHub con secretos
+      - name: Configure DVC remote for DagsHub
         run: |
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-          echo "AWS_DEFAULT_REGION=us-east-1" >> $GITHUB_ENV
+          dvc remote add -f dagshub s3://Telco_Churn_ML_Pipeline/dvc
+          dvc remote modify dagshub endpointurl https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline.s3
+          dvc remote modify dagshub access_key_id ${{ secrets.DAGSHUB_USER }}
+          dvc remote modify dagshub secret_access_key ${{ secrets.DAGSHUB_TOKEN }}
 
       - name: Check DVC installation
         run: dvc --version
 
-      # Recuperar datos y artefactos versionados en DVC
+      # Recuperar datos del remoto
       - name: DVC Pull
-        run: dvc pull -v
+        run: dvc pull -r dagshub -v --force
 
-      # Ejecutar el pipeline completo en un entorno limpio
+      # Ejecutar todo el pipeline
       - name: Reproduce DVC pipeline
         run: dvc repro -v
 
-      # Mostrar métricas generadas por el modelo
+      # Subir resultados actualizados al remoto
+      - name: Push artifacts to DagsHub
+        run: dvc push -r dagshub -v
+
+      # Mostrar métricas en la consola de GitHub Actions
       - name: Show DVC Metrics
         run: dvc metrics show
