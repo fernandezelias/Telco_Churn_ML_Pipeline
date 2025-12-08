@@ -1,7 +1,8 @@
 [core]
     remote = dagshub
-
-[remote "dagshub"]
+['remote "dagshub"']
     url = s3://fernandezelias/Telco_Churn_ML_Pipeline/dvc
     endpointurl = https://dagshub.com/api/v1/repo-buckets/s3/fernandezelias/Telco_Churn_ML_Pipeline
     region = us-east-1
+    access_key_id = TU_ACCESS_KEY
+    secret_access_key = TU_SECRET_KEY
