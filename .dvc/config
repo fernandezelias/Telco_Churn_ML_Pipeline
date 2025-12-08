@@ -2,6 +2,6 @@
     remote = dagshub
 
 [remote "dagshub"]
-    url = s3://Telco_Churn_ML_Pipeline/dvc
-    endpointurl = https://dagshub.com/api/v1/repo-buckets/s3/fernandezelias
+    url = s3://fernandezelias/Telco_Churn_ML_Pipeline/dvc
+    endpointurl = https://dagshub.com/api/v1/repo-buckets/s3/fernandezelias/Telco_Churn_ML_Pipeline
     region = us-east-1
