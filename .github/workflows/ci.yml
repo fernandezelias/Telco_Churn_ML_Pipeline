@@ -26,14 +26,12 @@ jobs:
           pip install -r requirements.txt
           pip install dvc[s3]
 
-      # Configuración del remoto DagsHub con secretos
+      # Configurar credenciales para usar el remoto dagshub YA EXISTENTE en .dvc/config
       - name: Configure DVC remote for DagsHub
         run: |
-          dvc remote add -f dagshub s3://Telco_Churn_ML_Pipeline/dvc
           dvc remote modify dagshub endpointurl https://dagshub.com/api/v1/repo-buckets/s3/fernandezelias
           dvc remote modify dagshub access_key_id ${{ secrets.DAGSHUB_USER }}
           dvc remote modify dagshub secret_access_key ${{ secrets.DAGSHUB_TOKEN }}
-          dvc remote modify dagshub region us-east-1
 
       - name: Check DVC installation
         run: dvc --version
@@ -46,10 +44,10 @@ jobs:
       - name: Reproduce DVC pipeline
         run: dvc repro -v
 
-      # Subir resultados actualizados al remoto
+      # Subir resultados al remoto
       - name: Push artifacts to DagsHub
         run: dvc push -r dagshub -v
 
-      # Mostrar métrricas en la consola de GitHub Actions
+      # Mostrar métricas en consola
       - name: Show DVC Metrics
         run: dvc metrics show
