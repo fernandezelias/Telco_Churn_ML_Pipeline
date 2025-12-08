@@ -5,3 +5,5 @@
     url = s3://Telco_Churn_ML_Pipeline/dvc
     endpointurl = https://dagshub.com/api/v1/repo-buckets/s3/fernandezelias
     region = us-east-1
+    access_key_id = 48f367fedc1c9958511f1911ccd47bfa2f8777a8
+    secret_access_key = 48f367fedc1c9958511f1911ccd47bfa2f8777a8
