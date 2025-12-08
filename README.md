@@ -1,6 +1,6 @@
 # Proyecto Telco Churn – Pipeline DVC y MLflow
 
-## 🎥 Video de presentación  
+## 🎥 Video de presentación del proyecto 
 🔗 https://drive.google.com/file/d/193S2B7LXzIZteEYVEh_pgidtS5NrmDru/view?usp=drive_link
 
 ## Resumen ejecutivo
@@ -624,6 +624,6 @@ En conjunto, el proyecto demuestra:
 
 **Materia:** Laboratorio de Minería de Datos  
 
-**Repositorios disponibles en:**
+**Repositorios:**
 - GitHub: https://github.com/fernandezelias/Telco_Churn_ML_Pipeline
 - DagsHub: https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline
