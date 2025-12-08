@@ -1,5 +1,8 @@
 # Proyecto Telco Churn – Pipeline DVC y MLflow
 
+## 🎥 Video de presentación  
+🔗 https://drive.google.com/file/d/193S2B7LXzIZteEYVEh_pgidtS5NrmDru/view?usp=drive_link
+
 ## Resumen ejecutivo
 
 Este proyecto implementa un pipeline completo y reproducible de Machine Learning para predecir el churn en una empresa de telecomunicaciones, integrando herramientas de MLOps modernas como **DVC**, **MLflow**, **GitHub Actions** y **DagsHub**. A lo largo de siete etapas progresivas, el trabajo aborda desde la ingesta y limpieza de datos hasta la experimentación controlada, validación automática mediante CI/CD y evaluación avanzada del modelo para su eventual despliegue.  
@@ -621,6 +624,6 @@ En conjunto, el proyecto demuestra:
 
 **Materia:** Laboratorio de Minería de Datos  
 
-**Repositorios:**
+**Repositorios disponibles en:**
 - GitHub: https://github.com/fernandezelias/Telco_Churn_ML_Pipeline
 - DagsHub: https://dagshub.com/fernandezelias/Telco_Churn_ML_Pipeline
