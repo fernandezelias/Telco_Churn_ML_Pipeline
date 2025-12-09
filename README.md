@@ -1,6 +1,6 @@
 # Proyecto Telco Churn – Pipeline DVC y MLflow
 
-## 🎥 Video de presentación del proyecto (clic en enlace):
+## 🎥 Video presentación del proyecto (clic en enlace):
 🔗 https://drive.google.com/file/d/193S2B7LXzIZteEYVEh_pgidtS5NrmDru/view?usp=drive_link
 
 ## Resumen ejecutivo
