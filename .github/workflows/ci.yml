@@ -9,16 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
 
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Configure DVC remote credentials
-        run: |
-          dvc remote modify dagshub access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          dvc remote modify dagshub secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
