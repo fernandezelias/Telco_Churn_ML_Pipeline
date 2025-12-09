@@ -29,9 +29,12 @@ jobs:
       # Configurar credenciales para usar el remoto dagshub YA EXISTENTE en .dvc/config
       - name: Configure DVC remote for DagsHub
         run: |
-          dvc remote modify dagshub endpointurl https://dagshub.com/api/v1/repo-buckets/s3/fernandezelias
-          dvc remote modify dagshub access_key_id ${{ secrets.DAGSHUB_USER }}
-          dvc remote modify dagshub secret_access_key ${{ secrets.DAGSHUB_TOKEN }}
+          # Configure endpoint for DagsHub S3 backend
+          dvc remote modify dagshub endpointurl https://dagshub.com
+
+          # Set S3 credentials for DVC remote
+          dvc remote modify dagshub access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          dvc remote modify dagshub secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Check DVC installation
         run: dvc --version
